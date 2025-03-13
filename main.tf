@@ -10,6 +10,7 @@ resource "aws_ssoadmin_permission_set" "this" {
   instance_arn     = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   tags             = each.value.tags
   session_duration = each.value.session_duration
+  relay_state      = lookup(each.value, "relay_state", null)
 }
 
 resource "aws_ssoadmin_permission_set_inline_policy" "this" {
