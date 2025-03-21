@@ -2,9 +2,7 @@
 
 Manage AWS IAM Identity Center permission sets and account assignments with Terraform.
 
-## Prerequisites
-
-- [Enable Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/get-set-up-for-idc.html)
+This pattern is twinned with [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups).
 
 ## Module Inputs
 ```hcl
@@ -31,7 +29,8 @@ module "idc" {
 
 This pattern does not setup users and groups. These are typically handled by an external Identity Provider (IdP). 
 
-If you are not using an IdP and want to create groups in Identity Center, use this pattern: [idc-users-and-groups-with-terraform](https://github.com/aws-samples/identity-center-users-and-groups-with-terraform).
+If you are not using an IdP and want to create groups in Identity Center, use this pattern: [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups).
+
 
 We have deliberately segregated the two patterns:
 - You may be using an external IdP
