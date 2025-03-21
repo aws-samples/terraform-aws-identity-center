@@ -1,4 +1,4 @@
-# identity-center-with-terraform
+# terraform-aws-identity-center
 
 Manage AWS IAM Identity Center permission sets and account assignments with Terraform.
 
@@ -9,7 +9,8 @@ Manage AWS IAM Identity Center permission sets and account assignments with Terr
 ## Module Inputs
 ```hcl
 module "idc" {
-  source              = "github.com/aws-samples/identity-center-with-terraform"
+  source              = "aws-samples/identity-center-users-and-groups/aws"
+  version             = "1.0.0"
   permission_sets     = "./permission_sets.yml"
   account_assignments = "./account_assignments.yml"
 }
@@ -20,7 +21,7 @@ module "idc" {
 ```hcl
 module "idc" {
   ... 
-  policies            = "./policies/"
+  policies = "./policies/"
 }
 ```
 
@@ -45,12 +46,7 @@ This pattern can be used with [delegated administration](https://docs.aws.amazon
 ## Related Resources 
 
 - [AWS IAM Identity User Guide](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)
-- [Resource:aws_ssoadmin_permission_set](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permission_set)
-- [Resource:aws_ssoadmin_permission_set_inline_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permission_set_inline_policy)
-- [Resource:aws_ssoadmin_managed_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_managed_policy_attachment)
-- [Resource: aws_ssoadmin_customer_managed_policy_attachment](https://apg-library.amazonaws.com/content-viewer/author/55d67529-de69-4d69-8b82-6efe4f2e7eb4)
-- [Resource: aws_ssoadmin_permissions_boundary_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permissions_boundary_attachment)
-- [Resource: aws_ssoadmin_account_assignment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_account_assignment)
+- [Terraform Registry](https://registry.terraform.io/modules/aws-samples/identity-center/aws/latest)
 
 ## Security
 See [CONTRIBUTING](./CONTRIBUTING.md) for more information.
