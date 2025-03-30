@@ -45,7 +45,7 @@ This pattern can be used with [delegated administration](https://docs.aws.amazon
 ## Related Resources 
 
 - [AWS IAM Identity User Guide](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)
-- [Terraform Registry](https://registry.terraform.io/modules/aws-samples/identity-center/aws/latest)
+- [Terraform Registry: aws-samples/identity-center/aws](https://registry.terraform.io/modules/aws-samples/identity-center/aws/latest)
 
 ## Security
 See [CONTRIBUTING](./CONTRIBUTING.md) for more information.
