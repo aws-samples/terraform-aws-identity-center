@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 variable "permission_sets" {
-  type = list(string)
+  type = map(string)
 }
 
 variable "principal" {
