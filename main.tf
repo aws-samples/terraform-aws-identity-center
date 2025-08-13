@@ -47,12 +47,12 @@ module "account_assignment" {
   depends_on = [
     aws_ssoadmin_permission_set.this
   ]
-  source             = "./modules/assignments"
-  for_each           = yamldecode(file(var.account_assignments))
-  principal          = each.value.principal
-  principal_type     = each.value.principal_type
-  permission_sets    = { for ps in each.value.permission_sets : ps => aws_ssoadmin_permission_set.this[ps].arn }
-  account_assignment = each.value.account_list
-  instances_arns     = tolist(data.aws_ssoadmin_instances.this.arns)[0]
-  identity_store_id  = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
+  source              = "./modules/assignments"
+  for_each            = yamldecode(file(var.account_assignments))
+  principal           = each.value.principal
+  principal_type      = each.value.principal_type
+  permission_set_arns = { for ps in each.value.permission_sets : ps => aws_ssoadmin_permission_set.this[ps].arn }
+  account_assignment  = each.value.account_list
+  instances_arns      = tolist(data.aws_ssoadmin_instances.this.arns)[0]
+  identity_store_id   = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
 }

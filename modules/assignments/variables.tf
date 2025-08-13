@@ -1,10 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-variable "permission_sets" {
-  type = map(string)
-}
-
 variable "principal" {
   type = string
 }
@@ -23,4 +19,8 @@ variable "instances_arns" {
 
 variable "identity_store_id" {
   type = string
+}
+
+variable "permission_set_arns" {
+  type = map(string)
 }

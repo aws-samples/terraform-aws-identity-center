@@ -9,7 +9,7 @@ locals {
 
   account_permission_set = flatten([
     for account in var.account_assignment : [
-      for permission_set in var.permission_sets : {
+      for permission_set in keys(var.permission_set_arns) : {
         account        = account
         permission_set = permission_set
       }
