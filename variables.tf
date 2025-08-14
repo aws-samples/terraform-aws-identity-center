@@ -9,6 +9,8 @@ variable "account_assignments" {
   type = string
 }
 
+// optional
+
 variable "policies" {
   type    = string
   default = "./policies/"
