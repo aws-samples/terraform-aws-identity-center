@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-variable "permission_sets" {
+variable "account_assignments" {
   type = string
 }
 
-variable "account_assignments" {
+variable "permission_sets" {
   type = string
 }
 

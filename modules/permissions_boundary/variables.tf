@@ -12,4 +12,3 @@ variable "permission_set_arn" {
 variable "permissions_boundary" {
   type = map(string)
 }
-
