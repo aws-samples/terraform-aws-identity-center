@@ -44,9 +44,6 @@ module "aws_permissions_boundary" {
 }
 
 module "account_assignment" {
-  depends_on = [
-    aws_ssoadmin_permission_set.this
-  ]
   source              = "./modules/assignments"
   for_each            = yamldecode(file(var.account_assignments))
   principal           = each.value.principal
