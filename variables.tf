@@ -2,16 +2,19 @@
 // SPDX-License-Identifier: MIT-0
 
 variable "account_assignments" {
-  type = string
+  type        = string
+  description = "Path to YAML file containing account assignments"
 }
 
 variable "permission_sets" {
-  type = string
+  type        = string
+  description = "Path to YAML file containing permission sets"
 }
 
 // optional
 
 variable "policies" {
-  type    = string
-  default = "./policies/"
+  type        = string
+  default     = "./policies/"
+  description = "Path to directory containing inline policy JSON files"
 }
