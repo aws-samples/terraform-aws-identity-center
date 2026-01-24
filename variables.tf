@@ -4,11 +4,21 @@
 variable "account_assignments" {
   type        = string
   description = "Path to YAML file containing account assignments"
+
+  validation {
+    condition     = can(regex("\\.(yml|yaml)$", var.account_assignments))
+    error_message = "Account assignments file must have .yml or .yaml extension."
+  }
 }
 
 variable "permission_sets" {
   type        = string
   description = "Path to YAML file containing permission sets"
+
+  validation {
+    condition     = can(regex("\\.(yml|yaml)$", var.permission_sets))
+    error_message = "Permission sets file must have .yml or .yaml extension."
+  }
 }
 
 // optional
