@@ -15,3 +15,9 @@ variable "policies" {
   type    = string
   default = "./policies/"
 }
+
+variable "template_variables" {
+  description = "Variables to substitute in yaml templates (.yml.tpl and .yaml.tpl files)"
+  type        = map(string)
+  default     = {}
+}
