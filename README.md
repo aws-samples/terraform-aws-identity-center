@@ -40,7 +40,9 @@ module "idc" {
   }
 }
 ```
-`template_variables` inserts variables into template files. See [iam.json.tpl](./service_control_policy/iam.json.tpl) for an example. 
+`template_variables` inserts variables into template files. See [permission_sets.yml.tpl](./examples/permission_sets.yml.tpl) and [account_assignments.yml.tpl](./examples/account_assignments.yml.tpl) for examples with the above inputs. 
+
+See [template files](./examples/template_files.md) for advanced templating suggestions. 
 
 ## Users and groups
 
