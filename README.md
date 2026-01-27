@@ -15,7 +15,7 @@ module "idc" {
 ```
 `permission_sets` and `account_assignments` are defined using yaml templates. These module inputs should point at the yaml file location. Example [permission_sets.yml](./examples/permission_sets.yml) and [account_assignments.yml](./examples/account_assignments.yml).
 
-## Optional Inputs
+### Optional Inputs
 ```hcl
 module "idc" {
   ... 
@@ -24,6 +24,23 @@ module "idc" {
 ```
 
 `policies` is used for inline policies on permission sets. This input should point at a directory of IAM policy json files. Example [policies directory](./examples/policies/). 
+
+### Template Files
+
+The module accepts template files (`.yml.tpl` or `.yaml.tpl`). These can be inputted alongside regular yaml files.  
+```hcl
+module "idc" {
+  ...
+  permission_sets     = "./permission_sets.yml"
+  account_assignments = "./account_assignments.yml.tpl"
+  template_variables = {
+    management       = var.management_account_id
+    audit            = var.audit_account_id
+    session_duration = "8"
+  }
+}
+```
+`template_variables` inserts variables into template files. See [iam.json.tpl](./service_control_policy/iam.json.tpl) for an example. 
 
 ## Users and groups
 
