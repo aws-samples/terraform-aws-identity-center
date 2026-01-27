@@ -1,4 +1,4 @@
-# template files
+# Template files
 
 The module accepts template files (`.yml.tpl` or `.yaml.tpl`). These can be inputted alongside regular yaml files.  
 
