@@ -9,9 +9,7 @@ The module accepts template files (`.yml.tpl` or `.yaml.tpl`). These can be inpu
 module "idc" {
   ...
   template_variables = {
-    management       = var.management_account_id
-    audit            = var.audit_account_id
-    session_duration = "8"
+    management    = var.management_account_id
   }
 }
 ```
@@ -29,7 +27,6 @@ Admin:
     - ReadOnly 
   account_list: 
     - ${management}
-    - ${audit}
 ```
 
 ## Advanced templating
@@ -104,7 +101,6 @@ Admin:
 
 Use Terraform loops to automatically populate account lists based on account name patterns.
 
-**main.tf:**
 ```hcl
 data "aws_organizations_organization" "current" {}
 
@@ -136,3 +132,50 @@ DevelopmentTeam:
     - ${development_accounts}
 ```
 
+### Tag-based account access
+
+Use account tags in account assignments. 
+
+```hcl
+data "aws_organizations_organization" "current" {}
+
+locals {
+  # Filter accounts by AccessLevel tag
+  admin_accounts = [
+    for account in data.aws_organizations_organization.current.accounts :
+    account.id if try([for tag in account.tags : tag.value if tag.key == "AccessLevel"][0], "") == "admin"
+  ]
+  
+  developer_accounts = [
+    for account in data.aws_organizations_organization.current.accounts :
+    account.id if try([for tag in account.tags : tag.value if tag.key == "AccessLevel"][0], "") == "developer"
+  ]
+}
+
+module "idc" {
+  ...
+  account_assignments = "./account_assignments.yml.tpl"
+  template_variables = {
+    admin_accounts = join("\n    - ", local.admin_accounts)
+    developer_accounts = join("\n    - ", local.developer_accounts)
+  }
+}
+```
+
+```yaml
+AdminAccess:
+  principal: Admins
+  principal_type: Group
+  permission_sets:
+    - Admin
+  account_list:
+    - ${admin_accounts}
+
+DeveloperAccess:
+  principal: Developers
+  principal_type: Group
+  permission_sets:
+    - Developer
+  account_list:
+    - ${developer_accounts}
+```
