@@ -145,19 +145,21 @@ locals {
     for account in data.aws_organizations_organization.current.accounts :
     account.id if try([for tag in account.tags : tag.value if tag.key == "AccessLevel"][0], "") == "admin"
   ]
-  
+  admin_accounts_yaml = join("\n    - ", local.admin_accounts)
+
   developer_accounts = [
     for account in data.aws_organizations_organization.current.accounts :
     account.id if try([for tag in account.tags : tag.value if tag.key == "AccessLevel"][0], "") == "developer"
   ]
+  developer_accounts_yaml = join("\n    - ", local.developer_accounts)
 }
 
 module "idc" {
   ...
   account_assignments = "./account_assignments.yml.tpl"
   template_variables = {
-    admin_accounts = join("\n    - ", local.admin_accounts)
-    developer_accounts = join("\n    - ", local.developer_accounts)
+    admin_accounts = local.admin_accounts_yaml
+    developer_accounts = local.developer_accounts_yaml
   }
 }
 ```
