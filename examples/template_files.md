@@ -99,85 +99,64 @@ Admin:
 
 ### Filter by account prefix
 
-Use Terraform loops to automatically populate account lists based on account name patterns.
-
 ```hcl
 data "aws_organizations_organization" "current" {}
 
 locals {
-  development_accounts = [
+  test_accounts = [
     for account in data.aws_organizations_organization.current.accounts :
-    account.id if startswith(account.name, "development")
+    account.id if startswith(account.name, "test")
   ]
-  
-  development_accounts_yaml = join("\n    - ", local.development_accounts)
+  test_accounts_yaml = join("\n    - ", local.test_accounts)
 }
 
 module "idc" {
   ...
   template_variables = {
-    development_accounts = local.development_accounts_yaml
+    test_accounts = local.test_accounts_yaml
   }
 }
 ```
 
 ```yaml
-DevelopmentTeam:
-  principal: DevelopmentTeam
+QAT:
+  principal: TestingTeam
   principal_type: Group
   permission_sets:
     - Developer
     - ReadOnly
   account_list:
-    - ${development_accounts}
+    - ${test_accounts}
 ```
 
 ### Tag-based account access
-
-Use account tags in account assignments. 
 
 ```hcl
 data "aws_organizations_organization" "current" {}
 
 locals {
-  # Filter accounts by AccessLevel tag
-  admin_accounts = [
+  sandbox_accounts = [
     for account in data.aws_organizations_organization.current.accounts :
-    account.id if try([for tag in account.tags : tag.value if tag.key == "AccessLevel"][0], "") == "admin"
+    account.id if try([for tag in account.tags : tag.value if tag.key == "Env"][0], "") == "Sandbox"
   ]
-  admin_accounts_yaml = join("\n    - ", local.admin_accounts)
-
-  developer_accounts = [
-    for account in data.aws_organizations_organization.current.accounts :
-    account.id if try([for tag in account.tags : tag.value if tag.key == "AccessLevel"][0], "") == "developer"
-  ]
-  developer_accounts_yaml = join("\n    - ", local.developer_accounts)
+  sandbox_accounts_yaml = join("\n    - ", local.sandbox_accounts)
 }
 
 module "idc" {
   ...
   account_assignments = "./account_assignments.yml.tpl"
   template_variables = {
-    admin_accounts = local.admin_accounts_yaml
-    developer_accounts = local.developer_accounts_yaml
+    sandbox_accounts = local.sandbox_accounts_yaml
   }
 }
 ```
 
 ```yaml
-AdminAccess:
-  principal: Admins
-  principal_type: Group
-  permission_sets:
-    - Admin
-  account_list:
-    - ${admin_accounts}
-
-DeveloperAccess:
+DeveloperSandboxAccess:
   principal: Developers
   principal_type: Group
   permission_sets:
     - Developer
   account_list:
-    - ${developer_accounts}
+    - ${sandbox_accounts}
 ```
