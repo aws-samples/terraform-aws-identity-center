@@ -31,10 +31,7 @@ Admin:
 
 ## Advanced templating
 
-### Account name to account ID mapping
-
-Use locals and a data source to map account names to account IDs. 
-
+### Lookup Account IDs
 
 ```hcl
 data "aws_organizations_organization" "current" {}
@@ -49,53 +46,22 @@ locals {
 module "idc" {
   ...
   template_variables = {
-    development = local.account_map["Development"]
-    test        = local.account_map["Test"]
-    production  = local.account_map["Production"]
+    account_map = local.account_map
   }
 }
 ```
 
 ```yaml
-Admin:
-  principal: Admin
+CloudOps:
+  principal: CloudOperaations
   principal_type: Group
   permission_sets: 
-    - Admin
+    - PowerUser
   account_list: 
-    - ${production}
+    - "${account_map["workload1"}" // quotes used to ensure string is kept intact, otherwise leading 0s may be trimmed
+    - "${account_map["workload2"}"
 ```
 
-The lookup can also be done from within the template file. 
-
-```hcl
-data "aws_organizations_organization" "current" {}
-
-locals {
-  account_map = {
-    for account in data.aws_organizations_organization.current.accounts :
-    account.name => account.id
-  }
-}
-
-module "idc" {
-  ...
-  template_variables = {
-    account_map = jsonencode(local.account_map)
-  }
-}
-```
-
-```yaml
-Admin:
-  principal: Admin
-  principal_type: Group
-  permission_sets: 
-    - Admin
-  account_list: 
-    - ${lookup(jsondecode(account_map), "development")}
-    - ${lookup(jsondecode(account_map), "test")}
-```
 
 ### Filter by account prefix
 
