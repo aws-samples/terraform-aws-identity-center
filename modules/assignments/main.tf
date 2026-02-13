@@ -34,4 +34,12 @@ resource "aws_ssoadmin_account_assignment" "this" {
   principal_type     = local.principal_type_upper
   target_id          = each.value.account
   target_type        = "AWS_ACCOUNT"
+
+  lifecycle {
+    ignore_changes = [
+      instance_arn,
+      permission_set_arn,
+      principal_id
+    ]
+  }
 }
