@@ -10,6 +10,10 @@ resource "aws_ssoadmin_permission_set" "this" {
   instance_arn     = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   tags             = each.value.tags
   session_duration = each.value.session_duration
+
+  lifecycle {
+    ignore_changes = [instance_arn]
+  }
 }
 
 resource "aws_ssoadmin_permission_set_inline_policy" "this" {
@@ -17,6 +21,10 @@ resource "aws_ssoadmin_permission_set_inline_policy" "this" {
   inline_policy      = file("${var.policies}${each.value.inline_policy}.json")
   instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
+
+  lifecycle {
+    ignore_changes = [instance_arn]
+  }
 }
 
 module "aws_managed_policies" {
