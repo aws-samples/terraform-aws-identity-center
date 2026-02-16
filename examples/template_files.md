@@ -58,10 +58,10 @@ CloudOps:
   permission_sets: 
     - PowerUser
   account_list: 
-    - "${account_map["workload1"}" // quotes used to ensure string is kept intact, otherwise leading 0s may be trimmed
-    - "${account_map["workload2"}"
+    - "${account_map["workload1"]}" 
+    - "${account_map["workload2"]}"
 ```
-
+Quotes used to ensure string is kept intact, otherwise leading 0s may be trimmed
 
 ### Filter by account prefix
 
