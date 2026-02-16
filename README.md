@@ -46,11 +46,7 @@ See [template files](./examples/template_files.md) for suggestions.
 
 ## Users and groups
 
-This pattern does not setup users and groups. These are typically handled by an external Identity Provider (IdP). If you are not using an IdP and want to create groups in Identity Center, use this pattern: [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups).
-
-## Delegated Administration
-
-This pattern can be used with [delegated administration](https://docs.aws.amazon.com/singlesignon/latest/userguide/delegated-admin.html) in Identity Center. The module would need to be deployed to both the management account and delegated account. 
+If you are not using an external Identity Provider(IdP) and want to create groups in Identity Center, use this pattern: [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups).
 
 ## Related Resources 
 
