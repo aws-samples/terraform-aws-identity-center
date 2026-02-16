@@ -7,7 +7,7 @@ resource "aws_ssoadmin_permission_set" "this" {
   for_each         = local.permission_sets
   name             = each.key
   description      = each.value.description
-  instance_arn     = tolist(data.aws_ssoadmin_instances.this.arns)[0]
+  instance_arn     = local.instance_arn
   tags             = each.value.tags
   session_duration = each.value.session_duration
 }
@@ -15,14 +15,14 @@ resource "aws_ssoadmin_permission_set" "this" {
 resource "aws_ssoadmin_permission_set_inline_policy" "this" {
   for_each           = { for ps, values in local.permission_sets : ps => values if values.inline_policy != null }
   inline_policy      = file("${var.policies}${each.value.inline_policy}.json")
-  instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
+  instance_arn       = local.instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
 }
 
 module "aws_managed_policies" {
   source             = "./modules/aws_managed_policies"
   for_each           = { for ps, values in local.permission_sets : ps => values if values.aws_managed_policies != null }
-  instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
+  instance_arn       = local.instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
   name               = each.value.aws_managed_policies
 }
@@ -30,7 +30,7 @@ module "aws_managed_policies" {
 module "customer-managed_policies" {
   source             = "./modules/customer_managed_policies"
   for_each           = ({ for ps, values in local.permission_sets : ps => values if values.customer_managed_policies != null })
-  instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
+  instance_arn       = local.instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
   name               = each.value.customer_managed_policies
 }
@@ -38,7 +38,7 @@ module "customer-managed_policies" {
 module "aws_permissions_boundary" {
   for_each             = { for ps, values in local.permission_sets : ps => values if values.permissions_boundary != null }
   source               = "./modules/permissions_boundary"
-  instance_arn         = tolist(data.aws_ssoadmin_instances.this.arns)[0]
+  instance_arn         = local.instance_arn
   permission_set_arn   = aws_ssoadmin_permission_set.this[each.key].arn
   permissions_boundary = each.value.permissions_boundary
 }
@@ -50,7 +50,7 @@ module "account_assignment" {
   principal_type      = each.value.principal_type
   permission_set_arns = { for ps in each.value.permission_sets : ps => aws_ssoadmin_permission_set.this[ps].arn }
   account_assignment  = each.value.account_list
-  instances_arns      = tolist(data.aws_ssoadmin_instances.this.arns)[0]
-  identity_store_id   = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
+  instances_arns      = local.instance_arn
+  identity_store_id   = local.identity_store_id
 }
 
