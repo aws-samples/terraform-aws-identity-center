@@ -8,7 +8,7 @@ This pattern is twinned with [terraform-aws-identity-center-users-and-groups](ht
 ```hcl
 module "idc" {
   source              = "aws-samples/identity-center/aws"
-  version             = "1.1.0"
+  version             = "1.2.2"
   permission_sets     = "./permission_sets.yml"
   account_assignments = "./account_assignments.yml"
 }
@@ -40,13 +40,11 @@ module "idc" {
   }
 }
 ```
-`template_variables` inserts variables into template files. See [permission_sets.yml.tpl](./examples/permission_sets.yml.tpl) and [account_assignments.yml.tpl](./examples/account_assignments.yml.tpl) for examples with the above inputs. 
-
-See [template files](./examples/template_files.md) for suggestions. 
+`template_variables` inserts variables into template files. See [permission_sets.yml.tpl](./examples/permission_sets.yml.tpl) and [account_assignments.yml.tpl](./examples/account_assignments.yml.tpl) for examples with the above inputs. See [template files](./docs/template_files.md) for suggestions. 
 
 ## Users and groups
 
-If you are not using an external Identity Provider(IdP) and want to create groups in Identity Center, use this pattern: [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups).
+Users and groups can be created with: [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups). The modules are de-coupled for AWS customers using an external Identity Provider (IdP).
 
 ## Related Resources 
 
