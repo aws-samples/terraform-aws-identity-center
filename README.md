@@ -19,11 +19,19 @@ module "idc" {
 ```hcl
 module "idc" {
   ... 
-  policies = "./policies/"
+  identity_store_id = "d-1234567890" // or tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0] 
+  instance_arn      = "arn:aws:sso:::instance/ssoins-112233445566" // or tolist(data.aws_ssoadmin_instances.this.arns)[0] 
+  policies          = "./policies/"
 }
 ```
 
-`policies` is used for inline policies on permission sets. This input should point at a directory of IAM policy json files. Example [policies directory](./examples/policies/). 
+`identity_store_id` is the Identity Center identity store id. [Data Source: aws_ssoadmin_instances](https://registry.terraform.io/providers/hashicorp/awS/latest/docs/data-sources/ssoadmin_instances) can be used to fetch it. This optional input will likely become mandatory in a future build as it reduces unecessary resource refreshes.
+
+`instance_arn" is the Identity Center instance arn. [Data Source: aws_ssoadmin_instances](https://registry.terraform.io/providers/hashicorp/awS/latest/docs/data-sources/ssoadmin_instances) can be used to fetch it. This optional input will likely become mandatory in a future build as it reduces unecessary resource refreshes.
+
+
+`policies` is used for inline policies on permission sets. This input should point at a directory of IAM policy json files. Example [policies directory](./examples/policies/).
+
 
 ### Template Files
 
