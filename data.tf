@@ -3,9 +3,9 @@
 
 data "aws_identitystore_group" "assignment_groups" {
   for_each = { for assignment in local.account_assignments : assignment.principal => assignment if upper(assignment.principal_type) == "GROUP" }
-  
+
   identity_store_id = local.identity_store_id
-  
+
   alternate_identifier {
     unique_attribute {
       attribute_path  = "DisplayName"
@@ -16,9 +16,9 @@ data "aws_identitystore_group" "assignment_groups" {
 
 data "aws_identitystore_user" "assignment_users" {
   for_each = { for assignment in local.account_assignments : assignment.principal => assignment if upper(assignment.principal_type) == "USER" }
-  
+
   identity_store_id = local.identity_store_id
-  
+
   alternate_identifier {
     unique_attribute {
       attribute_path  = "UserName"

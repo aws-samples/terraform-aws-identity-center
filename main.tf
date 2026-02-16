@@ -44,14 +44,14 @@ module "aws_permissions_boundary" {
 }
 
 module "account_assignment" {
-  source              = "./modules/assignments"
-  for_each            = local.account_assignments
-  principal           = each.value.principal
-  principal_type      = each.value.principal_type
-  permission_set_arns = { for ps in each.value.permission_sets : ps => aws_ssoadmin_permission_set.this[ps].arn }
-  account_assignment  = each.value.account_list
-  instances_arns      = local.instance_arn
-  identity_store_id   = local.identity_store_id
+  source                = "./modules/assignments"
+  for_each              = local.account_assignments
+  principal             = each.value.principal
+  principal_type        = each.value.principal_type
+  permission_set_arns   = { for ps in each.value.permission_sets : ps => aws_ssoadmin_permission_set.this[ps].arn }
+  account_assignment    = each.value.account_list
+  instances_arns        = local.instance_arn
+  identity_store_id     = local.identity_store_id
   resolved_principal_id = upper(each.value.principal_type) == "GROUP" ? data.aws_identitystore_group.assignment_groups[each.value.principal].group_id : data.aws_identitystore_user.assignment_users[each.value.principal].user_id
 }
 
