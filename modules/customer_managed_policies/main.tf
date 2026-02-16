@@ -9,5 +9,9 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "this" {
     name = each.key
     path = "/"
   }
+
+  lifecycle {
+    ignore_changes = [instance_arn]
+  }
 }
 

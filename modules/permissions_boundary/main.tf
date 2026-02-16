@@ -8,6 +8,10 @@ resource "aws_ssoadmin_permissions_boundary_attachment" "managed" {
   permissions_boundary {
     managed_policy_arn = "arn:aws:iam::aws:policy/${var.permissions_boundary.aws_managed_policy}"
   }
+
+  lifecycle {
+    ignore_changes = [instance_arn]
+  }
 }
 
 resource "aws_ssoadmin_permissions_boundary_attachment" "custom" {
@@ -19,5 +23,9 @@ resource "aws_ssoadmin_permissions_boundary_attachment" "custom" {
       name = var.permissions_boundary.customer_managed_policy
       path = "/"
     }
+  }
+
+  lifecycle {
+    ignore_changes = [instance_arn]
   }
 }
