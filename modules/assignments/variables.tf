@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+variable "resolved_principal_id" {
+  type = string
+}
+
 variable "account_assignment" {
   type = list(string)
 }

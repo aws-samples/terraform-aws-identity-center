@@ -52,5 +52,6 @@ module "account_assignment" {
   account_assignment  = each.value.account_list
   instances_arns      = local.instance_arn
   identity_store_id   = local.identity_store_id
+  resolved_principal_id = upper(each.value.principal_type) == "GROUP" ? data.aws_identitystore_group.assignment_groups[each.value.principal].group_id : data.aws_identitystore_user.assignment_users[each.value.principal].user_id
 }
 
