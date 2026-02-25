@@ -11,6 +11,18 @@ variable "permission_sets" {
 
 // optional
 
+variable "identity_store_id" {
+  description = "eg d-1234567890"
+  type        = string
+  default     = ""
+}
+
+variable "instance_arn" {
+  description = "eg arn:aws:sso:::instance/ssoins-112233445566"
+  type        = string
+  default     = ""
+}
+
 variable "policies" {
   type    = string
   default = "./policies/"
