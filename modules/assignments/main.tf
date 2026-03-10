@@ -11,6 +11,13 @@ data "aws_identitystore_group" "this" {
       attribute_value = var.principal
     }
   }
+
+  lifecycle {
+    postcondition {
+      condition     = self.group_id != null
+      error_message = "Group '${var.principal}' not found. Ensure the group exists before creating assignments."
+    }
+  }
 }
 
 data "aws_identitystore_user" "this" {
@@ -23,10 +30,17 @@ data "aws_identitystore_user" "this" {
       attribute_value = var.principal
     }
   }
+
+  lifecycle {
+    postcondition {
+      condition     = self.user_id != null
+      error_message = "User '${var.principal}' not found. Ensure the user exists before creating assignments."
+    }
+  }
 }
 
 resource "aws_ssoadmin_account_assignment" "this" {
-  for_each = { for account_set in local.account_permission_set : "${account_set.account}-${account_set.permission_set}" => account_set }
+  for_each = local.data_source != null ? { for account_set in local.account_permission_set : "${account_set.account}-${account_set.permission_set}" => account_set } : {}
 
   instance_arn       = var.instances_arns
   permission_set_arn = each.value.permission_set_arn
