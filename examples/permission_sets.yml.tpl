@@ -4,6 +4,7 @@
 Admin: 
   description: null
   tags: null
+  relay_state: null
   session_duration: "PT${session_duration}H"
   inline_policy: null
   aws_managed_policies:
