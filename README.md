@@ -37,6 +37,7 @@ module "idc" {
     management       = var.management_account_id
     audit            = var.audit_account_id
     session_duration = "8"
+    relay_state      = "https://eu-west-3.console.aws.amazon.com"
   }
 }
 ```

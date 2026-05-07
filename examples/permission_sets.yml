@@ -4,6 +4,7 @@
 Admin: #permission set name
   description: null
   tags: null
+  relay_state: null
   session_duration: "PT8H"
   inline_policy: null
   aws_managed_policies:
@@ -13,6 +14,7 @@ Admin: #permission set name
 ReadOnly:
   description: "Read-only role, check policy for exact details"
   tags: null
+  relay_state: null
   session_duration: null
   inline_policy: "ReadOnly"
   aws_managed_policies: null
@@ -22,6 +24,7 @@ ReadOnly:
 SecurityAdmin:
   description: "Security admin role"
   tags: null
+  relay_state: "https://eu-west-2.console.aws.amazon.com/securityhub/"
   session_duration: null
   inline_policy: null
   aws_managed_policies: null
