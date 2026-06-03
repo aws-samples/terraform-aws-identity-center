@@ -9,7 +9,7 @@ resource "aws_ssoadmin_permission_set" "this" {
   description      = each.value.description
   instance_arn     = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   tags             = each.value.tags
-  relay_state      = each.value.relay_state
+  relay_state      = try(each.value.relay_state, null)
   session_duration = each.value.session_duration
 
   lifecycle {
