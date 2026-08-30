@@ -31,5 +31,5 @@ SecurityAdmin:
   customer_managed_policies: 
     - "SecurityAdmin" 
   permissions_boundary:
-    aws_managed_policy: "ReadOnlyAccess" #policy name, not ARN
+    aws_managed_policy: "ReadOnlyAccess" 
 
