@@ -2,10 +2,6 @@
 // SPDX-License-Identifier: MIT-0
 
 locals {
-  // Every optional key defaults to null so that omitting it from the yaml is
-  // equivalent to setting it explicitly. yamldecode only returns the keys
-  // present in the file, so without this merge any omitted key is an
-  // "Unsupported attribute" error rather than a null.
   permission_set_defaults = {
     description               = null
     tags                      = null
@@ -19,6 +15,7 @@ locals {
 
   permission_sets_raw = can(regex("\\.tpl$", var.permission_sets)) ? yamldecode(templatefile(var.permission_sets, var.template_variables)) : yamldecode(file(var.permission_sets))
 
+  // merge raw and defaults. enables users to create yaml files with just the minimum key value pairs
   permission_sets = {
     for name, permission_set in local.permission_sets_raw :
     name => merge(local.permission_set_defaults, permission_set)
