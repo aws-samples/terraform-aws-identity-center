@@ -23,13 +23,11 @@ ReadOnly:
     customer_managed_policy: "TestPermissionsBoundary"
 SecurityAdmin:
   description: "Security admin role"
-  tags: null
   relay_state: "https://eu-west-2.console.aws.amazon.com/securityhub/"
-  session_duration: null
-  inline_policy: null
-  aws_managed_policies: null
   customer_managed_policies: 
     - "SecurityAdmin" 
   permissions_boundary:
     aws_managed_policy: "ReadOnlyAccess" 
-
+Developer: 
+  aws_managed_policies:
+    - "PowerUserAccess"
