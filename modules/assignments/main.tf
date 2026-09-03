@@ -36,10 +36,6 @@ resource "aws_ssoadmin_account_assignment" "this" {
   target_type        = "AWS_ACCOUNT"
 
   lifecycle {
-    ignore_changes = [
-      instance_arn,
-      permission_set_arn,
-      principal_id
-    ]
+    ignore_changes = [instance_arn]
   }
 }
