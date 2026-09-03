@@ -61,5 +61,12 @@ module "account_assignment" {
   account_assignment  = each.value.account_list
   instances_arns      = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   identity_store_id   = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
+
+  depends_on = [
+    aws_ssoadmin_permission_set_inline_policy.this,
+    module.aws_managed_policies,
+    module.customer-managed_policies,
+    module.aws_permissions_boundary,
+  ]
 }
 
