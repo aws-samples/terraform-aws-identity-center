@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT-0
 
 data "aws_ssoadmin_instances" "this" {
-  // checked here because everything depends on this data source, so it fails once, before any opaque index error
   lifecycle {
     precondition {
       condition     = length(local.undefined_permission_sets) == 0
