@@ -3,6 +3,11 @@
 
 variable "account_assignment" {
   type = list(string)
+
+  validation {
+    condition     = alltrue([for account in var.account_assignment : can(regex("^[0-9]{12}$", account))])
+    error_message = "Every account_list entry must be a 12-digit AWS account ID, quoted as a string (got ${jsonencode(var.account_assignment)})."
+  }
 }
 
 variable "identity_store_id" {

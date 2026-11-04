@@ -22,4 +22,9 @@ locals {
   }
 
   account_assignments = can(regex("\\.tpl$", var.account_assignments)) ? yamldecode(templatefile(var.account_assignments, var.template_variables)) : yamldecode(file(var.account_assignments))
+
+  undefined_permission_sets = sort(distinct([
+    for ps in flatten([for assignment in local.account_assignments : assignment.permission_sets]) :
+    ps if !contains(keys(local.permission_sets), ps)
+  ]))
 }

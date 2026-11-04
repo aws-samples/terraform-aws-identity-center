@@ -1,7 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-data "aws_ssoadmin_instances" "this" {}
+data "aws_ssoadmin_instances" "this" {
+  lifecycle {
+    precondition {
+      condition     = length(local.undefined_permission_sets) == 0
+      error_message = "Account assignments reference permission sets that are not defined in the permission sets file: ${join(", ", local.undefined_permission_sets)}."
+    }
+  }
+}
 
 resource "aws_ssoadmin_permission_set" "this" {
   for_each         = local.permission_sets
