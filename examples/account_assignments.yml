@@ -27,11 +27,11 @@ LogReader:
   permission_sets: 
     - ReadOnly
   account_list:
-    - "22334455667788" #Log Archive
+    - "223344556677" #Log Archive
 ReadOnlyLZUsers:
   principal: UserA
   principal_type: User
   permission_sets: 
     - ReadOnly
   account_list:
-    - "22334455667788" #Log Archive
+    - "223344556677" #Log Archive

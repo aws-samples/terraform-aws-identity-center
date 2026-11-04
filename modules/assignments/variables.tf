@@ -23,4 +23,9 @@ variable "principal" {
 
 variable "principal_type" {
   type = string
+
+  validation {
+    condition     = contains(["USER", "GROUP"], upper(var.principal_type))
+    error_message = "principal_type must be \"User\" or \"Group\" (got \"${var.principal_type}\")."
+  }
 }
