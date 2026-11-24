@@ -8,5 +8,5 @@ Admin:
     - Admin
     - ReadOnly 
   account_list: 
-    - ${management}
-    - ${audit}
+    - "${management}"
+    - "${audit}"
