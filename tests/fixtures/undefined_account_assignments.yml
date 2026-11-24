@@ -1,0 +1,8 @@
+Developers:
+  principal: Developers
+  principal_type: Group
+  permission_sets:
+    - Developer
+    - DoesNotExist
+  account_list:
+    - "012345678901"

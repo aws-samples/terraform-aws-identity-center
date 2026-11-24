@@ -4,23 +4,42 @@ on:
   pull_request:
     branches: [ main ]
 
-jobs: 
-  validate: 
+jobs:
+  validate:
+    name: validate (terraform ${{ matrix.terraform }}, aws ${{ matrix.aws }}.x)
     runs-on: ubuntu-latest
 
-    steps: 
+    strategy:
+      fail-fast: false
+      matrix:
+        # minimum supported (versions.tf) and latest
+        terraform: [ "1.5.7", "latest" ]
+        aws: [ "5", "6" ]
+
+    steps:
       - name: checkout code
         uses: actions/checkout@v7
 
       - name: setup terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: ${{ vars.TERRAFORM_VERSION }} 
+          terraform_version: ${{ matrix.terraform }}
+
+      - name: pin aws provider major version
+        run: |
+          cat > ci_override.tf <<EOF
+          terraform {
+            required_providers {
+              aws = {
+                source  = "hashicorp/aws"
+                version = "~> ${{ matrix.aws }}.0"
+              }
+            }
+          }
+          EOF
 
       - name: terraform init
-        run: terraform init -backend=false
+        run: terraform init -backend=false -upgrade
 
       - name: terraform validate
         run: terraform validate
-
-

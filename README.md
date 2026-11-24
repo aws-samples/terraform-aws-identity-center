@@ -47,6 +47,17 @@ module "idc" {
 
 Users and groups can be created with: [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups). The modules are de-coupled for AWS customers using an external Identity Provider (IdP).
 
+## Testing
+
+Tests use `terraform test` with a mocked AWS provider, so no AWS credentials are needed and nothing is created. Requires Terraform >= 1.7.
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
+Test files and fixtures are in [tests](./tests/). CI runs `validate` and `test` against the minimum and latest Terraform versions, and AWS provider 5.x and 6.x.
+
 ## Related Resources 
 
 - [AWS IAM Identity User Guide](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)

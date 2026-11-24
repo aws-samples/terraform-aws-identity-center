@@ -1,0 +1,7 @@
+# permission sets using only the minimum keys, relying on module defaults
+Developer:
+  aws_managed_policies:
+    - "PowerUserAccess"
+    - "job-function/ViewOnlyAccess"
+Inline:
+  inline_policy: "Test"

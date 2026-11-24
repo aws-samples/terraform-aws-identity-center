@@ -4,3 +4,5 @@
 .DS_Store
 
 todo.md
+
+ci_override.tf

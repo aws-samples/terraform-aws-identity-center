@@ -1,0 +1,9 @@
+Developers:
+  principal: Developers
+  principal_type: group
+  permission_sets:
+    - Developer
+    - Inline
+  account_list:
+    - "012345678901"
+    - "112233445566"
