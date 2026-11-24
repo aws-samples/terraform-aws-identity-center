@@ -56,13 +56,29 @@ run "examples" {
   }
 
   assert {
-    condition     = toset(keys(module.aws_permissions_boundary)) == toset(["ReadOnly", "SecurityAdmin"])
-    error_message = "Permissions boundaries should only be attached to ReadOnly and SecurityAdmin."
+    condition = tomap({ for name, m in module.aws_permissions_boundary : name => m.type }) == tomap({
+      ReadOnly      = "customer_managed_policy"
+      SecurityAdmin = "aws_managed_policy"
+    })
+    error_message = "Expected a customer managed boundary on ReadOnly and an AWS managed boundary on SecurityAdmin only."
   }
 
   assert {
-    condition     = length(module.account_assignment) == 4
-    error_message = "Expected 4 account assignment blocks."
+    condition = toset(flatten([for name, m in module.account_assignment : [for a in m.assignments : "${name}/${a}"]])) == toset([
+      "ReadOnlyLZ/112233445566-ReadOnly",
+      "ReadOnlyLZ/223344556677-ReadOnly",
+      "ReadOnlyLZ/334455667788-ReadOnly",
+      "ReadOnlyLZ/445566778899-ReadOnly",
+      "AdminLZ/112233445566-Admin",
+      "AdminLZ/112233445566-ReadOnly",
+      "AdminLZ/223344556677-Admin",
+      "AdminLZ/223344556677-ReadOnly",
+      "AdminLZ/334455667788-Admin",
+      "AdminLZ/334455667788-ReadOnly",
+      "LogReader/223344556677-ReadOnly",
+      "ReadOnlyLZUsers/223344556677-ReadOnly",
+    ])
+    error_message = "Account assignments do not match examples/account_assignments.yml."
   }
 }
 
@@ -81,8 +97,11 @@ run "minimal_yaml_uses_defaults" {
   }
 
   assert {
-    condition     = toset(keys(module.aws_managed_policies)) == toset(["Developer"])
-    error_message = "Only Developer has AWS managed policies."
+    condition = toset(flatten([for name, m in module.aws_managed_policies : [for arn in m.policy_arns : "${name}/${arn}"]])) == toset([
+      "Developer/arn:aws:iam::aws:policy/PowerUserAccess",
+      "Developer/arn:aws:iam::aws:policy/job-function/ViewOnlyAccess",
+    ])
+    error_message = "Only Developer should have AWS managed policies attached."
   }
 
   assert {
@@ -136,8 +155,12 @@ run "templates_with_mixed_variable_types" {
   }
 
   assert {
-    condition     = toset(keys(module.account_assignment)) == toset(["Admin", "Workloads"])
-    error_message = "Both templated assignment blocks should be created."
+    condition = toset(flatten([for name, m in module.account_assignment : [for a in m.assignments : "${name}/${a}"]])) == toset([
+      "Admin/012345678901-Admin",
+      "Workloads/023456789012-Admin",
+      "Workloads/112233445566-Admin",
+    ])
+    error_message = "Templated account IDs should be substituted with leading zeros intact."
   }
 }
 
