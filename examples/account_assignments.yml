@@ -11,12 +11,11 @@ ReadOnlyLZ: #assignment identifier, this must be unique
     - "223344556677" #Log Archive
     - "334455667788" #Identity
     - "445566778899" #Management
-AdminLZ:
+AdminLZ: # ReadOnly for this group is granted by ReadOnlyLZ; each grant must appear once
   principal: Admin
   principal_type: Group
   permission_sets: 
     - Admin
-    - ReadOnly 
   account_list: 
     - "112233445566" #Audit
     - "223344556677" #Log Archive

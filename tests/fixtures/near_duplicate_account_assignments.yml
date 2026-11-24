@@ -1,0 +1,29 @@
+# overlapping blocks that never repeat the same principal / account / permission set
+Base:
+  principal: Developers
+  principal_type: Group
+  permission_sets:
+    - Developer
+  account_list:
+    - "012345678901"
+DifferentPermissionSet:
+  principal: Developers
+  principal_type: Group
+  permission_sets:
+    - Inline
+  account_list:
+    - "012345678901"
+DifferentPrincipal:
+  principal: Testers
+  principal_type: Group
+  permission_sets:
+    - Developer
+  account_list:
+    - "012345678901"
+SameNameAsUser:
+  principal: Developers
+  principal_type: User
+  permission_sets:
+    - Developer
+  account_list:
+    - "012345678901"

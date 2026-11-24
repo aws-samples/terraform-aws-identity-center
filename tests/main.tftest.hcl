@@ -70,11 +70,8 @@ run "examples" {
       "ReadOnlyLZ/334455667788-ReadOnly",
       "ReadOnlyLZ/445566778899-ReadOnly",
       "AdminLZ/112233445566-Admin",
-      "AdminLZ/112233445566-ReadOnly",
       "AdminLZ/223344556677-Admin",
-      "AdminLZ/223344556677-ReadOnly",
       "AdminLZ/334455667788-Admin",
-      "AdminLZ/334455667788-ReadOnly",
       "LogReader/223344556677-ReadOnly",
       "ReadOnlyLZUsers/223344556677-ReadOnly",
     ])
@@ -170,6 +167,33 @@ run "undefined_permission_set_fails" {
   variables {
     permission_sets     = "./tests/fixtures/minimal_permission_sets.yml"
     account_assignments = "./tests/fixtures/undefined_account_assignments.yml"
+    policies            = "./tests/fixtures/policies/"
+  }
+
+  expect_failures = [data.aws_ssoadmin_instances.this]
+}
+
+run "near_duplicate_assignments_pass" {
+  command = apply
+
+  variables {
+    permission_sets     = "./tests/fixtures/minimal_permission_sets.yml"
+    account_assignments = "./tests/fixtures/near_duplicate_account_assignments.yml"
+    policies            = "./tests/fixtures/policies/"
+  }
+
+  assert {
+    condition     = length(module.account_assignment) == 4
+    error_message = "Overlapping blocks without an identical grant should all be created."
+  }
+}
+
+run "duplicate_assignments_fail" {
+  command = plan
+
+  variables {
+    permission_sets     = "./tests/fixtures/minimal_permission_sets.yml"
+    account_assignments = "./tests/fixtures/duplicate_account_assignments.yml"
     policies            = "./tests/fixtures/policies/"
   }
 

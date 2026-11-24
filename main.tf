@@ -7,6 +7,11 @@ data "aws_ssoadmin_instances" "this" {
       condition     = length(local.undefined_permission_sets) == 0
       error_message = "Account assignments reference permission sets that are not defined in the permission sets file: ${join(", ", local.undefined_permission_sets)}."
     }
+
+    precondition {
+      condition     = length(local.duplicate_assignments) == 0
+      error_message = "Account assignments grant the same principal, account and permission set more than once. Remove the duplicates so each grant appears once: ${join("; ", local.duplicate_assignments)}. If these assignments already exist, see https://github.com/aws-samples/terraform-aws-identity-center/blob/main/docs/duplicate_assignments.md before removing them."
+    }
   }
 }
 
