@@ -26,7 +26,7 @@ resource "aws_ssoadmin_permission_set" "this" {
 
 resource "aws_ssoadmin_permission_set_inline_policy" "this" {
   for_each           = { for ps, values in local.permission_sets : ps => values if values.inline_policy != null }
-  inline_policy      = file("${var.policies}${each.value.inline_policy}.json")
+  inline_policy      = file("${trimsuffix(var.policies, "/")}/${each.value.inline_policy}.json")
   instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
 
