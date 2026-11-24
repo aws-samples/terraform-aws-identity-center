@@ -26,7 +26,7 @@ Admin:
     - Admin
     - ReadOnly 
   account_list: 
-    - ${management}
+    - "${management}"
 ```
 
 ## Advanced templating
@@ -53,7 +53,7 @@ module "idc" {
 
 ```yaml
 CloudOps:
-  principal: CloudOperaations
+  principal: CloudOperations
   principal_type: Group
   permission_sets: 
     - PowerUser
@@ -61,7 +61,7 @@ CloudOps:
     - "${account_map["workload1"]}" 
     - "${account_map["workload2"]}"
 ```
-Quotes used to ensure string is kept intact, otherwise leading 0s may be trimmed
+Account IDs must be quoted. Unquoted IDs are parsed as numbers by YAML, so leading 0s are trimmed and validation will fail.
 
 ### Filter by account prefix
 
@@ -73,7 +73,7 @@ locals {
     for account in data.aws_organizations_organization.current.accounts :
     account.id if startswith(account.name, "test")
   ]
-  test_accounts_yaml = join("\n    - ", local.test_accounts)
+  test_accounts_yaml = jsonencode(local.test_accounts)
 }
 
 module "idc" {
@@ -91,9 +91,9 @@ QAT:
   permission_sets:
     - Developer
     - ReadOnly
-  account_list:
-    - ${test_accounts}
+  account_list: ${test_accounts}
 ```
+`jsonencode` renders the list as a quoted YAML flow sequence (`["012345678901", "112233445566"]`), so IDs stay strings.
 
 ### Tag-based account access
 
@@ -105,7 +105,7 @@ locals {
     for account in data.aws_organizations_organization.current.accounts :
     account.id if try([for tag in account.tags : tag.value if tag.key == "Env"][0], "") == "Sandbox"
   ]
-  sandbox_accounts_yaml = join("\n    - ", local.sandbox_accounts)
+  sandbox_accounts_yaml = jsonencode(local.sandbox_accounts)
 }
 
 module "idc" {
@@ -123,6 +123,5 @@ DeveloperSandboxAccess:
   principal_type: Group
   permission_sets:
     - Developer
-  account_list:
-    - ${sandbox_accounts}
+  account_list: ${sandbox_accounts}
 ```
