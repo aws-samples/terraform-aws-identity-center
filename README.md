@@ -8,7 +8,7 @@ This pattern is twinned with [terraform-aws-identity-center-users-and-groups](ht
 ```hcl
 module "idc" {
   source              = "aws-samples/identity-center/aws"
-  version             = "1.2.2"
+  version             = "~> 1.3"
   permission_sets     = "./permission_sets.yml"
   account_assignments = "./account_assignments.yml"
 }
