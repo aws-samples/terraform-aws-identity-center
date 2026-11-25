@@ -27,4 +27,24 @@ locals {
     for ps in flatten([for assignment in local.account_assignments : assignment.permission_sets]) :
     ps if !contains(keys(local.permission_sets), ps)
   ]))
+
+  // every principal / account / permission set grant, with the block it came from.
+  // null accounts are skipped here and reported by the assignments module validation
+  assignment_grants = flatten([
+    for block, assignment in local.account_assignments : [
+      for account in assignment.account_list : [
+        for ps in assignment.permission_sets : {
+          grant = "${try(upper(assignment.principal_type), "")} ${assignment.principal} / ${account} / ${ps}"
+          block = block
+        }
+      ] if account != null
+    ]
+  ])
+
+  // AWS identifies an assignment by principal, account and permission set, so the same
+  // grant in two places would be two Terraform resources managing one AWS assignment
+  duplicate_assignments = sort([
+    for grant, blocks in { for g in local.assignment_grants : g.grant => g.block... } :
+    "${grant} (in ${join(", ", distinct(blocks))})" if length(blocks) > 1
+  ])
 }

@@ -15,6 +15,8 @@ module "idc" {
 ```
 `permission_sets` and `account_assignments` are defined using yaml templates. These module inputs should point at the yaml file location. Example [permission_sets.yml](./examples/permission_sets.yml) and [account_assignments.yml](./examples/account_assignments.yml).
 
+Each grant (principal, account, permission set) must appear only once across all account assignment blocks. See [duplicate assignments](./docs/duplicate_assignments.md).
+
 ### Optional Inputs
 ```hcl
 module "idc" {
@@ -46,17 +48,6 @@ module "idc" {
 ## Users and groups
 
 Users and groups can be created with: [terraform-aws-identity-center-users-and-groups](https://github.com/aws-samples/terraform-aws-identity-center-users-and-groups). The modules are de-coupled for AWS customers using an external Identity Provider (IdP).
-
-## Testing
-
-Tests use `terraform test` with a mocked AWS provider, so no AWS credentials are needed and nothing is created. Requires Terraform >= 1.7.
-
-```sh
-terraform init -backend=false
-terraform test
-```
-
-Test files and fixtures are in [tests](./tests/). CI runs `validate` and `test` against the minimum and latest Terraform versions, and AWS provider 5.x and 6.x.
 
 ## Related Resources 
 

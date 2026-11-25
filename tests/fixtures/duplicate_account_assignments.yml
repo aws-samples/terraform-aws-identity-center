@@ -1,0 +1,18 @@
+# Developers / 112233445566 / Developer is granted by both blocks.
+# principal_type differs only in case, which is still the same principal
+Broad:
+  principal: Developers
+  principal_type: Group
+  permission_sets:
+    - Developer
+  account_list:
+    - "012345678901"
+    - "112233445566"
+Narrow:
+  principal: Developers
+  principal_type: GROUP
+  permission_sets:
+    - Developer
+    - Inline
+  account_list:
+    - "112233445566"
