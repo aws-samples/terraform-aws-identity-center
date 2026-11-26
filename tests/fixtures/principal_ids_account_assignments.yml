@@ -1,0 +1,23 @@
+# Developers and UserA are created alongside the module and passed in by ID.
+# Security is not passed in, so it is looked up by name
+Developers:
+  principal: Developers
+  principal_type: Group
+  permission_sets:
+    - Developer
+  account_list:
+    - "012345678901"
+UserA:
+  principal: UserA
+  principal_type: User
+  permission_sets:
+    - Developer
+  account_list:
+    - "012345678901"
+Security:
+  principal: Security
+  principal_type: Group
+  permission_sets:
+    - Developer
+  account_list:
+    - "112233445566"

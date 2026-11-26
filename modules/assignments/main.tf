@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 data "aws_identitystore_group" "this" {
-  count             = local.principal_type == "GROUP" ? 1 : 0
+  count             = local.principal_type == "GROUP" && !local.principal_id_provided ? 1 : 0
   identity_store_id = var.identity_store_id
 
   alternate_identifier {
@@ -14,7 +14,7 @@ data "aws_identitystore_group" "this" {
 }
 
 data "aws_identitystore_user" "this" {
-  count             = local.principal_type == "USER" ? 1 : 0
+  count             = local.principal_type == "USER" && !local.principal_id_provided ? 1 : 0
   identity_store_id = var.identity_store_id
 
   alternate_identifier {
@@ -30,7 +30,7 @@ resource "aws_ssoadmin_account_assignment" "this" {
 
   instance_arn       = var.instances_arns
   permission_set_arn = each.value.permission_set_arn
-  principal_id       = local.data_source
+  principal_id       = local.principal_id
   principal_type     = local.principal_type
   target_id          = each.value.account
   target_type        = "AWS_ACCOUNT"

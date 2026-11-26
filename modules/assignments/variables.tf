@@ -39,3 +39,9 @@ variable "principal_type" {
     error_message = "principal_type must be \"User\" or \"Group\" (got \"${var.principal_type}\")."
   }
 }
+
+variable "principal_ids" {
+  description = "Principal name to ID. Skips the lookup for principals in the map."
+  type        = map(string)
+  default     = {}
+}

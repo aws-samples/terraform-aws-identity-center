@@ -149,3 +149,70 @@ run "null_account_entry_fails" {
 
   expect_failures = [var.account_assignment]
 }
+
+run "group_id_from_map" {
+  command = apply
+
+  module {
+    source = "./modules/assignments"
+  }
+
+  variables {
+    principal_ids = { Developers = "00000000-0000-0000-0000-0000000000aa" }
+  }
+
+  assert {
+    condition     = aws_ssoadmin_account_assignment.this["012345678901-Developer"].principal_id == "00000000-0000-0000-0000-0000000000aa"
+    error_message = "Group ID should come from principal_ids."
+  }
+
+  assert {
+    condition     = length(data.aws_identitystore_group.this) == 0
+    error_message = "Group should not be looked up when its ID is provided."
+  }
+}
+
+run "user_id_from_map" {
+  command = apply
+
+  module {
+    source = "./modules/assignments"
+  }
+
+  variables {
+    principal_type = "User"
+    principal_ids  = { Developers = "00000000-0000-0000-0000-0000000000bb" }
+  }
+
+  assert {
+    condition     = aws_ssoadmin_account_assignment.this["012345678901-Developer"].principal_id == "00000000-0000-0000-0000-0000000000bb"
+    error_message = "User ID should come from principal_ids."
+  }
+
+  assert {
+    condition     = length(data.aws_identitystore_user.this) == 0
+    error_message = "User should not be looked up when its ID is provided."
+  }
+}
+
+run "principal_not_in_map_is_looked_up" {
+  command = apply
+
+  module {
+    source = "./modules/assignments"
+  }
+
+  variables {
+    principal_ids = { SomeOtherGroup = "00000000-0000-0000-0000-0000000000cc" }
+  }
+
+  assert {
+    condition     = aws_ssoadmin_account_assignment.this["012345678901-Developer"].principal_id == "00000000-0000-0000-0000-000000000001"
+    error_message = "A principal missing from principal_ids should fall back to the identity store lookup."
+  }
+
+  assert {
+    condition     = length(data.aws_identitystore_group.this) == 1
+    error_message = "Group should be looked up when its ID is not provided."
+  }
+}
