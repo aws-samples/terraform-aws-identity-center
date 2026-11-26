@@ -21,3 +21,12 @@ variable "template_variables" {
   type        = any
   default     = {}
 }
+
+variable "principal_ids" {
+  description = "Group and user IDs by name, e.g. the users and groups module's principal_ids output. Others are looked up by name."
+  type = object({
+    groups = optional(map(string), {})
+    users  = optional(map(string), {})
+  })
+  default = {}
+}

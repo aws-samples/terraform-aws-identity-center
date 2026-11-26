@@ -199,3 +199,21 @@ run "duplicate_assignments_fail" {
 
   expect_failures = [data.aws_ssoadmin_instances.this]
 }
+
+run "principal_ids_groups_only" {
+  command = apply
+
+  variables {
+    permission_sets     = "./tests/fixtures/minimal_permission_sets.yml"
+    account_assignments = "./tests/fixtures/minimal_account_assignments.yml"
+    policies            = "./tests/fixtures/policies/"
+    principal_ids = {
+      groups = { Developers = "00000000-0000-0000-0000-0000000000aa" }
+    }
+  }
+
+  assert {
+    condition     = toset(module.account_assignment["Developers"].assignments) == toset(["012345678901-Developer", "012345678901-Inline", "112233445566-Developer", "112233445566-Inline"])
+    error_message = "principal_ids with only groups set should still create assignments."
+  }
+}

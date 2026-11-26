@@ -69,6 +69,7 @@ module "account_assignment" {
   for_each            = local.account_assignments
   principal           = each.value.principal
   principal_type      = each.value.principal_type
+  principal_ids       = try(upper(each.value.principal_type), "") == "GROUP" ? var.principal_ids.groups : var.principal_ids.users
   permission_set_arns = { for ps in each.value.permission_sets : ps => aws_ssoadmin_permission_set.this[ps].arn }
   account_assignment  = each.value.account_list
   instances_arns      = tolist(data.aws_ssoadmin_instances.this.arns)[0]
